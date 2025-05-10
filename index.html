@@ -1,46 +1,28 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>5th Convocation Photo Album</title>
   <!-- Turn.js Flipbook CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.css"/>
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div id="flipbook">
-    <!-- Generate pages with JavaScript -->
-  </div>  <!-- Navigation Controls -->  <div class="controls">
+  <div id="flipbook"></div>
+
+  <!-- Navigation Controls -->
+  <div class="controls">
     <button id="prev">&#9664; Prev</button>
     <span id="page-num">1 / 100</span>
     <button id="next">Next &#9654;</button>
-  </div>  <!-- Dependencies -->  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>  <!-- Custom Script -->  <script src="script.js"></script></body>
-</html>/* style.css */ body { margin: 0; padding: 0; background: #f2f2f2; font-family: sans-serif; } #flipbook { width: 90vw; height: 80vh; margin: 2rem auto; background: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.2); } #flipbook .page { width: 100%; height: 100%; overflow: hidden; } #flipbook .page img { width: 100%; height: 100%; object-fit: cover; } .controls { text-align: center; margin-bottom: 1rem; } .controls button { padding: 0.5rem 1rem; margin: 0 1rem; font-size: 1rem; cursor: pointer; }
+  </div>
 
-/* script.js */ $(document).ready(function() { const totalPics = 199; const pages = Math.ceil(totalPics / 2); const flipbook = $('#flipbook');
-
-// generate page divs for (let i = 1; i <= pages * 2; i += 2) { // left page let leftIdx = i; let rightIdx = i + 1; let pageHTML = '<div class="page">'; if (leftIdx <= totalPics) { pageHTML += <img src="images/${leftIdx}.jpg" alt="Pic ${leftIdx}">; } pageHTML += '</div><div class="page">'; if (rightIdx <= totalPics) { pageHTML += <img src="images/${rightIdx}.jpg" alt="Pic ${rightIdx}">; } pageHTML += '</div>'; flipbook.append(pageHTML); }
-
-// initialize turn.js flipbook.turn({ width: '100%', height: '100%', autoCenter: true, pages: pages * 2, acceleration: true });
-
-// update controls $('#page-num').text(1 / ${pages * 2}); flipbook.bind('turned', function(e, page) { $('#page-num').text(${page} / ${pages * 2}); });
-
-$('#prev').click(() => flipbook.turn('previous')); $('#next').click(() => flipbook.turn('next')); });
-
-/** Instructions:
-
-1. Place your 199 images in an "images" folder named sequentially: 1.jpg, 2.jpg, ..., 199.jpg.
-
-
-2. Host these three files (index.html, style.css, script.js) together with the folder.
-
-
-3. Open index.html in a browser to view the magazine-style flipbook.
-
-
-4. Customize styling or layout as desired. */
-
-
-
-  
+  <!-- Dependencies -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+  <!-- Custom Script -->
+  <script src="script.js"></script>
+</body>
+</html>
