@@ -1,25 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ADUSTECH Convocation Photo Album Magazine</title>
-  <link rel="stylesheet" href="style.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5th Convocation - ADUSTECH Wudil</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffffff 50%, #008000 50%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        h1 {
+            color: #008000;
+            margin: 0;
+        }
+        
+        .subtitle {
+            color: #555;
+            font-style: italic;
+        }
+        
+        #flipbook-container {
+            width: 900px;
+            height: 600px;
+            position: relative;
+            margin: 20px auto;
+        }
+        
+        #flipbook {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .page {
+            background-color: white;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .hard {
+            background: linear-gradient(135deg, #008000, #006600);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .hard h2 {
+            font-size: 2em;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        
+        button {
+            background-color: #008000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            min-width: 100px;
+        }
+        
+        button:hover {
+            background-color: #006600;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .page-number {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+            max-width: 1000px;
+        }
+        
+        .thumbnail {
+            width: 60px;
+            height: 45px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .thumbnail:hover {
+            border-color: #008000;
+        }
+        
+        .thumbnail.active {
+            border-color: #008000;
+        }
+        
+        @media (max-width: 1000px) {
+            #flipbook-container {
+                width: 100%;
+                height: 400px;
+            }
+            
+            .hard h2 {
+                font-size: 1.5em;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            #flipbook-container {
+                height: 300px;
+            }
+            
+            .thumbnail {
+                width: 40px;
+                height: 30px;
+            }
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.1/turn.min.js"></script>
 </head>
 <body>
-  <h1 class="album-title">ADUSTECH 5th Convocation Magazine Photo Album</h1>
+    <div class="header">
+        <h1>5th Convocation Ceremony</h1>
+        <div class="subtitle">Aliko Dangote University of Science and Technology, Wudil, Kano State, Nigeria</div>
+    </div>
+    
+    <div id="flipbook-container">
+        <div id="flipbook"></div>
+    </div>
+    
+    <div class="controls">
+        <button id="first-btn">First</button>
+        <button id="prev-btn">Previous</button>
+        <span class="page-number">Page <span id="current-page">1</span> of <span id="total-pages">1</span></span>
+        <button id="next-btn">Next</button>
+        <button id="last-btn">Last</button>
+    </div>
+    
+    <div class="thumbnail-container" id="thumbnails"></div>
 
-  <div id="flipbook" class="magazine"></div>
-
-  <div class="nav-buttons">
-    <button id="prev">⟨ Prev</button>
-    <span id="page-num">Page 1</span>
-    <button id="next">Next ⟩</button>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
-  <script src="script.js"></script>
+    <script>
+        // Sample image links (replace with your actual 199 images)
+        const imageLinks = [
+            'https://drive.google.com/uc?export=view&id=1UPVUDtxY5TPRC68msKD5zLxRusFV1yov',
+            // Add your remaining 198 image links here
+            // 'https://drive.google.com/uc?export=view&id=FILE_ID_2',
+            // 'https://drive.google.com/uc?export=view&id=FILE_ID_3',
+        ];
+        
+        // Initialize variables
+        let flipbook;
+        let totalPages;
+        
+        // Initialize the flipbook
+        function initFlipbook() {
+            // Calculate total pages (2 images per spread + covers)
+            totalPages = Math.ceil(imageLinks.length / 2) + 2; // +2 for front and back covers
+            
+            // Create the flipbook
+            flipbook = $('#flipbook').turn({
+                width: 900,
+                height: 600,
+                autoCenter: true,
+                duration: 1000,
+                acceleration: true,
+                gradients: true,
+                when: {
+                    turning: function(e, page, view) {
+                        updateControls();
+                    },
+                    turned: function(e, page) {
+                        updateControls();
+                    }
+                }
+            });
+            
+            // Add front cover
+            flipbook.turn('addPage', $('<div class="hard"> <h2>5th Convocation<br>ADUSTECH Wudil</h2> </div>'), 1);
+            
+            // Add content pages (2 images per spread)
+            for (let i = 0; i < imageLinks.length; i += 2) {
+                const pageNum = (i / 2) + 2;
+                const pageContent = $('<div class="page"></div>');
+                
+                // Create left page (first image)
+                const leftImg = $('<div style="width:50%;height:100%;float:left;background-image:url(' + imageLinks[i] + ');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>');
+                pageContent.append(leftImg);
+                
+                // Create right page (second image if exists)
+                if (imageLinks[i + 1]) {
+                    const rightImg = $('<div style="width:50%;height:100%;float:right;background-image:url(' + imageLinks[i + 1] + ');background-size:contain;background-repeat:no-repeat;background-position:center;"></div>');
+                    pageContent.append(rightImg);
+                } else {
+                    // If odd number of images, leave right page blank
+                    const rightBlank = $('<div style="width:50%;height:100%;float:right;background-color:white;"></div>');
+                    pageContent.append(rightBlank);
+                }
+                
+                flipbook.turn('addPage', pageContent, pageNum);
+            }
+            
+            // Add back cover
+            flipbook.turn('addPage', $('<div class="hard"> <h2>Congratulations Graduates!<br>Class of 2023</h2> </div>'), totalPages);
+            
+            // Update page counter
+            $('#total-pages').text(totalPages);
+            
+            // Create thumbnails
+            createThumbnails();
+            
+            // Update controls
+            updateControls();
+        }
+        
+        // Create thumbnail navigation
+        function createThumbnails() {
+            const thumbnails = $('#thumbnails');
+            thumbnails.empty();
+            
+            // Add thumbnail for cover
+            const coverThumb = $('<div class="thumbnail" data-page="1" style="background:#008000;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;">Cover</div>');
+            thumbnails.append(coverThumb);
+            
+            // Add thumbnails for content pages
+            for (let i = 0; i < imageLinks.length; i++) {
+                const pageNum = Math.floor(i / 2) + 2;
+                const thumb = $('<img class="thumbnail" src="' + imageLinks[i] + '">');
+                thumb.attr('data-page', pageNum);
+                thumbnails.append(thumb);
+            }
+            
+            // Add thumbnail for back cover
+            const backThumb = $('<div class="thumbnail" data-page="' + totalPages + '" style="background:#008000;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;">Back</div>');
+            thumbnails.append(backThumb);
+            
+            // Add click handlers
+            $('.thumbnail').click(function() {
+                const page = $(this).data('page');
+                flipbook.turn('page', page).done(function() {
+                    updateControls();
+                });
+            });
+        }
+        
+        // Update control buttons
+        function updateControls() {
+            const page = flipbook.turn('page');
+            $('#current-page').text(page);
+            
+            $('#first-btn').prop('disabled', page === 1);
+            $('#prev-btn').prop('disabled', page === 1);
+            $('#next-btn').prop('disabled', page === totalPages);
+            $('#last-btn').prop('disabled', page === totalPages);
+            
+            // Update active thumbnail
+            $('.thumbnail').removeClass('active');
+            $('.thumbnail[data-page="' + page + '"]').addClass('active');
+        }
+        
+        // Event handlers with proper flipbook methods
+        $('#first-btn').click(function() {
+            flipbook.turn('page', 1).done(function() {
+                updateControls();
+            });
+        });
+        
+        $('#prev-btn').click(function() {
+            flipbook.turn('previous').done(function() {
+                updateControls();
+            });
+        });
+        
+        $('#next-btn').click(function() {
+            flipbook.turn('next').done(function() {
+                updateControls();
+            });
+        });
+        
+        $('#last-btn').click(function() {
+            flipbook.turn('page', totalPages).done(function() {
+                updateControls();
+            });
+        });
+        
+        // Keyboard navigation
+        $(document).keydown(function(e) {
+            if (e.key === 'ArrowLeft') {
+                flipbook.turn('previous');
+                e.preventDefault();
+            } else if (e.key === 'ArrowRight') {
+                flipbook.turn('next');
+                e.preventDefault();
+            }
+        });
+        
+        // Initialize when DOM is ready
+        $(document).ready(function() {
+            // First check if there are image links
+            if (imageLinks.length > 0) {
+                initFlipbook();
+            } else {
+                alert('Please add your image links to the imageLinks array in the JavaScript code.');
+            }
+        });
+    </script>
 </body>
 </html>
