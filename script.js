@@ -1,40 +1,53 @@
-$(document).ready(function() {
+$(document).ready(function () {
   const totalPics = 199;
   const pages = Math.ceil(totalPics / 2);
-  const flipbook = $('#flipbook');
+  const flipbook = $("#flipbook");
 
-  // Generate page divs
-  for (let i = 1; i <= pages * 2; i += 2) {
-    let leftIdx = i;
-    let rightIdx = i + 1;
-    let pageHTML = '<div class="page">';
-    if (leftIdx <= totalPics) {
-      pageHTML += `<img src="images/${leftIdx}.jpg" alt="Pic ${leftIdx}">`;
+  // Create pages dynamically
+  for (let i = 1; i <= totalPics; i += 2) {
+    let left = i;
+    let right = i + 1;
+    let pagePair = '';
+
+    pagePair += '<div class="page">';
+    if (left <= totalPics) {
+      pagePair += `<img src="images/${left}.jpg" alt="Image ${left}">`;
     }
-    pageHTML += '</div><div class="page">';
-    if (rightIdx <= totalPics) {
-      pageHTML += `<img src="images/${rightIdx}.jpg" alt="Pic ${rightIdx}">`;
+    pagePair += '</div>';
+
+    pagePair += '<div class="page">';
+    if (right <= totalPics) {
+      pagePair += `<img src="images/${right}.jpg" alt="Image ${right}">`;
     }
-    pageHTML += '</div>';
-    flipbook.append(pageHTML);
+    pagePair += '</div>';
+
+    flipbook.append(pagePair);
   }
 
-  // Initialize turn.js
+  // Initialize Turn.js
   flipbook.turn({
-    width: '100%',
-    height: '100%',
+    width: $('#flipbook').width(),
+    height: $('#flipbook').height(),
     autoCenter: true,
-    pages: pages * 2,
-    acceleration: true
-  });
-
-  // Update page count
-  $('#page-num').text(`1 / ${pages * 2}`);
-  flipbook.bind('turned', function(e, page) {
-    $('#page-num').text(`${page} / ${pages * 2}`);
+    elevation: 50,
+    gradients: true,
+    duration: 800
   });
 
   // Navigation buttons
-  $('#prev').click(() => flipbook.turn('previous'));
-  $('#next').click(() => flipbook.turn('next'));
+  $('#prev').click(() => {
+    flipbook.turn('previous');
+  });
+
+  $('#next').click(() => {
+    flipbook.turn('next');
+  });
+
+  // Page number update
+  flipbook.bind('turned', function (e, page) {
+    $('#page-num').text(`Page ${page}`);
+  });
+
+  // Set initial page number
+  $('#page-num').text(`Page 1`);
 });
