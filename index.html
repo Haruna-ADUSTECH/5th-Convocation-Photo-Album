@@ -1,293 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>5th Convocation - ADUSTECH Wudil</title>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      background: linear-gradient(to bottom right, #008000, #ffffff);
-      color: #333;
-      overflow-x: hidden;
-    }
-
-    .header {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 30px 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      animation: fadeIn 1.5s ease-out;
-    }
-
-    .header h1 {
-      color: #004d00;
-      font-size: 2.5em;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-size: 1em;
-      color: #555;
-      font-style: italic;
-    }
-
-    #flipbook-container {
-      width: 90%;
-      max-width: 960px;
-      margin: 30px auto;
-      animation: slideIn 1.5s ease-out;
-    }
-
-    #flipbook {
-      width: 100%;
-      height: 600px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-
-    .page, .hard {
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hard {
-      background: linear-gradient(135deg, #006600, #004400);
-      color: white;
-      font-size: 2em;
-      font-weight: bold;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin: 20px auto;
-      max-width: 960px;
-    }
-
-    button {
-      background: #007a33;
-      border: none;
-      padding: 12px 25px;
-      color: white;
-      font-size: 1em;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
-
-    button:hover {
-      background: #005f26;
-      transform: scale(1.05);
-    }
-
-    button:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-
-    .page-number {
-      font-size: 1.1em;
-      color: #333;
-      font-weight: bold;
-    }
-
-    .thumbnail-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 20px auto;
-      gap: 8px;
-      max-width: 960px;
-    }
-
-    .thumbnail {
-      width: 60px;
-      height: 45px;
-      object-fit: cover;
-      border: 2px solid transparent;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .thumbnail:hover, .thumbnail.active {
-      border-color: #008000;
-      transform: scale(1.1);
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      #flipbook {
-        height: 400px;
-      }
-
-      .hard {
-        font-size: 1.2em;
-      }
-    }
-
-    @media (max-width: 480px) {
-      #flipbook {
-        height: 300px;
-      }
-
-      .thumbnail {
-        width: 40px;
-        height: 30px;
-      }
-    }
-  </style>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.1/turn.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Convocation Book</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="js/turn.min.js"></script>
 </head>
-
 <body>
+  <div class="book-container">
+    <div class="header">
+      <img src="images/logo.png" alt="University Logo" class="logo">
+      <h1>Convocation Brochure</h1>
+    </div>
 
-  <div class="header">
-    <h1>5th Convocation Ceremony</h1>
-    <div class="subtitle">Aliko Dangote University of Science and Technology, Wudil</div>
+    <div id="flipbook">
+      <div class="hard"><img src="images/cover.jpg" alt="Cover Page"></div>
+
+      <!-- Dynamically generated pages -->
+      <!-- Example: -->
+      <!-- <div><img src="images/page1.jpg" alt="Page 1"></div> -->
+      <!-- <div><img src="images/page2.jpg" alt="Page 2"></div> -->
+
+      <!-- End cover -->
+      <div class="hard back-cover">THE END</div>
+    </div>
+
+    <div class="controls">
+      <button onclick="$('#flipbook').turn('previous')">Previous</button>
+      <input type="number" id="goToPage" min="1" max="100" placeholder="Page #">
+      <button onclick="goToPage()">Go</button>
+      <button onclick="$('#flipbook').turn('next')">Next</button>
+    </div>
   </div>
 
-  <div id="flipbook-container">
-    <div id="flipbook"></div>
-  </div>
-
-  <div class="controls">
-    <button id="first-btn">⏮ First</button>
-    <button id="prev-btn">◀ Previous</button>
-    <span class="page-number">Page <span id="current-page">1</span> of <span id="total-pages">1</span></span>
-    <button id="next-btn">Next ▶</button>
-    <button id="last-btn">Last ⏭</button>
-  </div>
-
-  <div class="thumbnail-container" id="thumbnails"></div>
-
-  <script>
-    const imageLinks = [
-      'https://drive.google.com/uc?export=view&id=1UPVUDtxY5TPRC68msKD5zLxRusFV1yov',
-      // Add your 198 more images
-    ];
-
-    let flipbook;
-    let totalPages;
-
-    function initFlipbook() {
-      totalPages = Math.ceil(imageLinks.length / 2) + 2;
-
-      flipbook = $('#flipbook').turn({
-        width: 900,
-        height: 600,
-        autoCenter: true,
-        elevation: 50,
-        duration: 1200,
-        gradients: true,
-        acceleration: true,
-        when: {
-          turning: function(e, page) {
-            updateControls();
-          },
-          turned: function(e, page) {
-            updateControls();
-          }
-        }
-      });
-
-      flipbook.turn('addPage', $('<div class="hard">5th Convocation<br>ADUSTECH</div>'), 1);
-
-      for (let i = 0; i < imageLinks.length; i += 2) {
-        const pageNum = (i / 2) + 2;
-        const content = $('<div class="page"></div>');
-
-        const left = $('<div style="width:50%;height:100%;float:left;background:url(' + imageLinks[i] + ') no-repeat center;background-size:contain;"></div>');
-        content.append(left);
-
-        if (imageLinks[i + 1]) {
-          const right = $('<div style="width:50%;height:100%;float:right;background:url(' + imageLinks[i + 1] + ') no-repeat center;background-size:contain;"></div>');
-          content.append(right);
-        } else {
-          content.append('<div style="width:50%;height:100%;float:right;background:#fff;"></div>');
-        }
-
-        flipbook.turn('addPage', content, pageNum);
-      }
-
-      flipbook.turn('addPage', $('<div class="hard">Congratulations Graduates!</div>'), totalPages);
-
-      $('#total-pages').text(totalPages);
-      createThumbnails();
-      updateControls();
-    }
-
-    function createThumbnails() {
-      const container = $('#thumbnails');
-      container.empty();
-
-      const coverThumb = $('<div class="thumbnail" data-page="1" style="background:#008000;color:white;display:flex;align-items:center;justify-content:center;">Cover</div>');
-      container.append(coverThumb);
-
-      for (let i = 0; i < imageLinks.length; i++) {
-        const page = Math.floor(i / 2) + 2;
-        const img = $('<img class="thumbnail" src="' + imageLinks[i] + '" data-page="' + page + '">');
-        container.append(img);
-      }
-
-      const backThumb = $('<div class="thumbnail" data-page="' + totalPages + '" style="background:#008000;color:white;display:flex;align-items:center;justify-content:center;">Back</div>');
-      container.append(backThumb);
-
-      $('.thumbnail').click(function() {
-        const page = $(this).data('page');
-        flipbook.turn('page', page);
-        updateControls();
-      });
-    }
-
-    function updateControls() {
-      const page = flipbook.turn('page');
-      $('#current-page').text(page);
-      $('#first-btn').prop('disabled', page === 1);
-      $('#prev-btn').prop('disabled', page === 1);
-      $('#next-btn').prop('disabled', page === totalPages);
-      $('#last-btn').prop('disabled', page === totalPages);
-      $('.thumbnail').removeClass('active');
-      $('.thumbnail[data-page="' + page + '"]').addClass('active');
-    }
-
-    $('#first-btn').click(() => flipbook.turn('page', 1));
-    $('#prev-btn').click(() => flipbook.turn('previous'));
-    $('#next-btn').click(() => flipbook.turn('next'));
-    $('#last-btn').click(() => flipbook.turn('page', totalPages));
-
-    $(document).ready(() => {
-      initFlipbook();
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
