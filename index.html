@@ -1,38 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Convocation Book</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="js/turn.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5th Convocation - ADUSTECH Wudil</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="book-container">
     <div class="header">
-      <img src="images/logo.png" alt="University Logo" class="logo">
-      <h1>Convocation Brochure</h1>
+        <h1>5th Convocation Ceremony</h1>
+        <div class="subtitle">Aliko Dangote University of Science and Technology, Wudil, Kano State, Nigeria</div>
     </div>
-
-    <div id="flipbook">
-      <div class="hard"><img src="images/cover.jpg" alt="Cover Page"></div>
-
-      <!-- Dynamically generated pages -->
-      <!-- Example: -->
-      <!-- <div><img src="images/page1.jpg" alt="Page 1"></div> -->
-      <!-- <div><img src="images/page2.jpg" alt="Page 2"></div> -->
-
-      <!-- End cover -->
-      <div class="hard back-cover">THE END</div>
+    
+    <div id="flipbook-container">
+        <div id="flipbook">
+            <!-- Pages will be dynamically inserted here -->
+        </div>
     </div>
-
+    
     <div class="controls">
-      <button onclick="$('#flipbook').turn('previous')">Previous</button>
-      <input type="number" id="goToPage" min="1" max="100" placeholder="Page #">
-      <button onclick="goToPage()">Go</button>
-      <button onclick="$('#flipbook').turn('next')">Next</button>
+        <button id="first-btn">First</button>
+        <button id="prev-btn">Previous</button>
+        <span class="page-number">Page <span id="current-page">1</span> of <span id="total-pages">100</span></span>
+        <button id="next-btn">Next</button>
+        <button id="last-btn">Last</button>
     </div>
-  </div>
+    
+    <div class="thumbnail-container" id="thumbnails"></div>
 
-  <script src="script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.1/turn.min.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
